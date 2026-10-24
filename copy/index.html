@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pocket Budget Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="storage.js" defer></script>
+    <script src="addRecord.js" defer></script>
+    <script src="search.js" defer></script>
+    <script src="netBalance.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <h1>Pocket Budget Tracker</h1>
+          <p>Track spending and income by month.</p>
+        </div>
+        <div class="month-wrap">
+          <label for="month-selector">Selected month</label>
+          <input type="month" id="month-selector">
+          <div class="add-wrap">
+            <button id="btn-open-add" class="primary" aria-expanded="false">+ Add Record</button>
+            <section id="add-panel" class="add-panel" aria-label="Add record">
+              <h2>&#10003; Add Record</h2>
+              <div class="type-toggle">
+                <button class="type-btn active" data-type="expense" type="button">Expense</button>
+                <button class="type-btn" data-type="income" type="button">Income</button>
+              </div>
+              <form id="transaction-form">
+                <label>&#128176; Amount<input id="tx-amount" type="number" step="any" min="0" placeholder="0.00" required></label>
+                <label>&#9638; Category<select id="tx-category"></select></label>
+                <label>&#9719; Date<input id="tx-date" type="date" required></label>
+                <label>&#9998; Note<input id="tx-note" type="text" placeholder="Optional note"></label>
+                <button class="primary save" type="submit">Save Record</button>
+              </form>
+            </section>
+          </div>
+        </div>
+      </header>
+
+      <section class="metrics-grid" aria-label="Net balance">
+        <article class="metric"><span id="label-net-balance">Net Balance</span><strong id="metric-balance">&#8369;0.00</strong></article>
+        <article class="metric"><span>Income</span><strong class="income" id="metric-income">&#8369;0.00</strong></article>
+        <article class="metric"><span>Expenses</span><strong class="expense" id="metric-expense">&#8369;0.00</strong></article>
+      </section>
+
+      <section class="card">
+        <h2>Expense Breakdown by Category</h2>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Category</th><th>Spent</th><th>Share of expenses</th></tr></thead>
+            <tbody id="expense-breakdown-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card budget-card">
+        <div>
+          <h2>Monthly budget limit</h2>
+          <p id="budget-spent">&#8369;0.00 spent this month</p>
+          <div class="progress"><span id="budget-bar"></span></div>
+          <strong id="budget-value">&#8369;10,000.00</strong>
+        </div>
+        <button id="btn-edit-budget" class="secondary">Edit</button>
+        <form id="budget-form" hidden>
+          <label>Budget amount<input id="budget-input" type="number" min="0" step="any" required></label>
+          <button class="primary" type="submit">Save</button>
+          <button class="secondary" id="btn-cancel-budget" type="button">Cancel</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2 id="search-heading">Search & Records</h2>
+        <div class="tools">
+          <input id="search-input" type="search" placeholder="Search notes or categories">
+          <button id="btn-clean" class="secondary">Clean Duplicates</button>
+          <button id="btn-reverse" class="secondary">Reverse date order</button>
+        </div>
+        <div class="pills">
+          <button class="pill active" data-filter="all">All</button>
+          <button class="pill" data-filter="income">Income</button>
+          <button class="pill" data-filter="expense">Expenses</button>
+        </div>
+        <div id="search-results-container"></div>
+      </section>
+
+      <aside class="history">
+        <button id="btn-undo" disabled>Undo <span id="undo-count">0</span></button>
+        <button id="btn-redo" disabled>Redo <span id="redo-count">0</span></button>
+      </aside>
+      <div id="toast" role="status" class="toast"></div>
+    </main>
+  </body>
+</html>
